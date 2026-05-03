@@ -3,332 +3,295 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEXFORM — Furniture of Tomorrow</title>
+  <title>NEXFORM // CYBERPUNK FURNITURE</title>
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- Scan line overlay -->
+  <canvas id="rain"></canvas>
   <div class="scanlines"></div>
+  <div class="noise"></div>
 
-  <!-- Particle canvas -->
-  <canvas id="particles"></canvas>
+  <div class="hud-corner tl"></div>
+  <div class="hud-corner tr"></div>
+  <div class="hud-corner bl"></div>
+  <div class="hud-corner br"></div>
 
-  <!-- HUD corners -->
-  <div class="hud-corner top-left"></div>
-  <div class="hud-corner top-right"></div>
-  <div class="hud-corner bottom-left"></div>
-  <div class="hud-corner bottom-right"></div>
-
-  <!-- Navigation -->
   <nav class="nav">
     <div class="nav-logo">
-      <span class="logo-bracket">[</span>
-      <span class="logo-text">NEXFORM</span>
-      <span class="logo-bracket">]</span>
+      <span class="bracket">[</span>NEX<span class="pink">FORM</span><span class="bracket">]</span>
     </div>
-    <div class="nav-status">
-      <span class="status-dot"></span>
-      <span class="status-text" id="statusText">SYSTEM ONLINE</span>
+    <div class="nav-sys">
+      <span class="dot"></span>
+      <span id="sysMsg">SYS_ONLINE</span>
     </div>
     <ul class="nav-links">
-      <li><a href="#collections">COLLECTIONS</a></li>
-      <li><a href="#products">CATALOG</a></li>
-      <li><a href="#process">PROCESS</a></li>
-      <li><a href="#contact">CONTACT</a></li>
+      <li><a href="#catalog">CATALOG</a></li>
+      <li><a href="#collections">SERIES</a></li>
+      <li><a href="#process">PROTOCOL</a></li>
+      <li><a href="#contact">CONNECT</a></li>
     </ul>
-    <div class="nav-cta">
-      <button class="btn-glass">INITIATE ORDER</button>
-    </div>
+    <button class="btn-neon" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">ORDER NOW</button>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero" id="hero">
+  <section class="hero">
     <div class="hero-grid"></div>
-    <div class="hero-content">
-      <div class="hero-tag">
-        <span class="tag-line"></span>
-        <span>CUSTOM FURNITURE DESIGN // EST. 2024</span>
-        <span class="tag-line"></span>
+    <div class="rain-overlay"></div>
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="dash"></span>
+        <span class="mono">// NIGHT CITY INTERIORS // 2077</span>
+        <span class="dash"></span>
       </div>
-      <h1 class="hero-title">
-        <span class="glitch" data-text="FURNITURE">FURNITURE</span>
-        <br />
-        <span class="hero-subtitle-word">FROM THE</span>
-        <br />
-        <span class="glitch gold" data-text="FUTURE">FUTURE</span>
+      <h1 class="hero-h1">
+        <span class="glitch" data-t="LIVE">LIVE</span><br>
+        <span class="hero-mid">IN THE</span><br>
+        <span class="glitch pink-text" data-t="FUTURE">FUTURE</span>
       </h1>
-      <p class="hero-desc">
-        Precision-engineered. Handcrafted. Designed for those who exist beyond the ordinary — custom pieces that merge material mastery with tomorrow's aesthetic.
-      </p>
-      <div class="hero-actions">
-        <button class="btn-primary" onclick="scrollTo('#products')">
-          <span class="btn-icon">&#9654;</span> EXPLORE CATALOG
+      <p class="hero-p">Custom furniture engineered for the era of neon and chrome. Every piece is a statement — built for those who refuse the ordinary.</p>
+      <div class="hero-btns">
+        <button class="btn-cyber" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">
+          <span class="btn-glitch">EXPLORE</span>
         </button>
-        <button class="btn-outline" onclick="scrollTo('#contact')">
-          COMMISSION A PIECE
-        </button>
+        <button class="btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">COMMISSION</button>
       </div>
       <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num" data-target="247">000</span>
-          <span class="stat-label">PIECES CRAFTED</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num" data-target="98">00</span>
-          <span class="stat-label">% CLIENT SATISFACTION</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num" data-target="12">00</span>
-          <span class="stat-label">YEARS EXPERTISE</span>
-        </div>
+        <div class="hstat"><span class="hnum" data-t="247">000</span><span class="hlbl">PIECES BUILT</span></div>
+        <div class="hdiv"></div>
+        <div class="hstat"><span class="hnum" data-t="98">00</span><span class="hlbl">% SATISFIED</span></div>
+        <div class="hdiv"></div>
+        <div class="hstat"><span class="hnum" data-t="12">00</span><span class="hlbl">YRS CRAFTING</span></div>
       </div>
     </div>
-    <div class="hero-visual">
-      <div class="hero-img-container">
-        <div class="img-hud-overlay"></div>
-        <div class="img-scan"></div>
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80" alt="Signature Sofa" class="hero-img" />
-        <div class="img-label">
-          <span class="label-id">OBJ_001</span>
-          <span class="label-name">AURORA SOFA // SERIES VII</span>
-        </div>
-        <div class="img-data top-right-data">
-          <div>MAT: CARBON FIBRE + VELVET</div>
-          <div>DIM: 280 × 85 × 75 CM</div>
-          <div>STATUS: <span class="green">AVAILABLE</span></div>
+    <div class="hero-right">
+      <div class="img-frame">
+        <div class="frame-corner fc-tl"></div>
+        <div class="frame-corner fc-tr"></div>
+        <div class="frame-corner fc-bl"></div>
+        <div class="frame-corner fc-br"></div>
+        <div class="scan-bar"></div>
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80" alt="Hero Sofa" class="hero-img" />
+        <div class="img-hud"><span class="mono small">OBJ_001 // AURORA SOFA</span></div>
+        <div class="img-tag">
+          <div class="mono xtiny">MAT: SYNTH-LEATHER + CHROME</div>
+          <div class="mono xtiny">STATUS: <span class="green">◉ AVAILABLE</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Marquee ticker -->
-  <div class="ticker-wrap">
-    <div class="ticker">
-      <span>CUSTOM MADE ◆ HANDCRAFTED ◆ PREMIUM MATERIALS ◆ LIFETIME WARRANTY ◆ FREE WORLDWIDE SHIPPING ◆ BESPOKE DESIGNS ◆ LUXURY FURNITURE ◆ SCI-FI AESTHETIC ◆ </span>
-      <span>CUSTOM MADE ◆ HANDCRAFTED ◆ PREMIUM MATERIALS ◆ LIFETIME WARRANTY ◆ FREE WORLDWIDE SHIPPING ◆ BESPOKE DESIGNS ◆ LUXURY FURNITURE ◆ SCI-FI AESTHETIC ◆ </span>
+  <div class="ticker-bar">
+    <div class="ticker-track">
+      <span>CUSTOM MADE ◆ NIGHT CITY DELIVERY ◆ PREMIUM CHROME ◆ NEON FINISH ◆ LIFETIME WARRANTY ◆ CYBERPUNK AESTHETIC ◆ BESPOKE DESIGN ◆ CORP-GRADE BUILD ◆ </span>
+      <span>CUSTOM MADE ◆ NIGHT CITY DELIVERY ◆ PREMIUM CHROME ◆ NEON FINISH ◆ LIFETIME WARRANTY ◆ CYBERPUNK AESTHETIC ◆ BESPOKE DESIGN ◆ CORP-GRADE BUILD ◆ </span>
     </div>
   </div>
 
-  <!-- Collections -->
+  <section class="catalog" id="catalog">
+    <div class="sec-head">
+      <div class="sec-tag mono">// CATALOG //</div>
+      <h2 class="sec-title">SELECT YOUR <span class="pink-text">PIECE</span></h2>
+    </div>
+    <div class="filters">
+      <button class="filt active" data-f="all">ALL</button>
+      <button class="filt" data-f="seating">SEATING</button>
+      <button class="filt" data-f="tables">TABLES</button>
+      <button class="filt" data-f="storage">STORAGE</button>
+      <button class="filt" data-f="beds">BEDS</button>
+    </div>
+    <div class="pgrid">
+      <div class="pcard" data-c="seating">
+        <div class="pimg-wrap">
+          <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?w=600&q=80" alt="Orbital Chair" loading="lazy" />
+          <div class="pimg-overlay"><button class="btn-sm-neon">QUICK VIEW</button></div>
+          <div class="pbadge">NEW</div><div class="pscan"></div>
+        </div>
+        <div class="pinfo">
+          <div class="pmeta"><span class="mono xtiny pid">NX-001</span><span class="mono xtiny pcat">SEATING</span></div>
+          <h4 class="pname">ORBITAL CHAIR</h4>
+          <div class="pstars">★★★★★ <span class="rcnt">(42)</span></div>
+          <div class="pfoot"><span class="pprice">$4,200</span><button class="btn-add">+ ADD</button></div>
+        </div>
+      </div>
+      <div class="pcard" data-c="tables">
+        <div class="pimg-wrap">
+          <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&q=80" alt="Void Table" loading="lazy" />
+          <div class="pimg-overlay"><button class="btn-sm-neon">QUICK VIEW</button></div>
+          <div class="pscan"></div>
+        </div>
+        <div class="pinfo">
+          <div class="pmeta"><span class="mono xtiny pid">NX-002</span><span class="mono xtiny pcat">TABLES</span></div>
+          <h4 class="pname">VOID DINING TABLE</h4>
+          <div class="pstars">★★★★★ <span class="rcnt">(31)</span></div>
+          <div class="pfoot"><span class="pprice">$8,900</span><button class="btn-add">+ ADD</button></div>
+        </div>
+      </div>
+      <div class="pcard" data-c="seating">
+        <div class="pimg-wrap">
+          <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="Aurora Sofa" loading="lazy" />
+          <div class="pimg-overlay"><button class="btn-sm-neon">QUICK VIEW</button></div>
+          <div class="pbadge best">BESTSELLER</div><div class="pscan"></div>
+        </div>
+        <div class="pinfo">
+          <div class="pmeta"><span class="mono xtiny pid">NX-003</span><span class="mono xtiny pcat">SEATING</span></div>
+          <h4 class="pname">AURORA SOFA VII</h4>
+          <div class="pstars">★★★★★ <span class="rcnt">(88)</span></div>
+          <div class="pfoot"><span class="pprice">$12,400</span><button class="btn-add">+ ADD</button></div>
+        </div>
+      </div>
+      <div class="pcard" data-c="storage">
+        <div class="pimg-wrap">
+          <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&q=80" alt="Monolith Shelf" loading="lazy" />
+          <div class="pimg-overlay"><button class="btn-sm-neon">QUICK VIEW</button></div>
+          <div class="pscan"></div>
+        </div>
+        <div class="pinfo">
+          <div class="pmeta"><span class="mono xtiny pid">NX-004</span><span class="mono xtiny pcat">STORAGE</span></div>
+          <h4 class="pname">MONOLITH SHELF</h4>
+          <div class="pstars">★★★★☆ <span class="rcnt">(19)</span></div>
+          <div class="pfoot"><span class="pprice">$6,100</span><button class="btn-add">+ ADD</button></div>
+        </div>
+      </div>
+      <div class="pcard" data-c="beds">
+        <div class="pimg-wrap">
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&q=80" alt="Zenith Bed" loading="lazy" />
+          <div class="pimg-overlay"><button class="btn-sm-neon">QUICK VIEW</button></div>
+          <div class="pscan"></div>
+        </div>
+        <div class="pinfo">
+          <div class="pmeta"><span class="mono xtiny pid">NX-005</span><span class="mono xtiny pcat">BEDS</span></div>
+          <h4 class="pname">ZENITH BED FRAME</h4>
+          <div class="pstars">★★★★★ <span class="rcnt">(54)</span></div>
+          <div class="pfoot"><span class="pprice">$9,800</span><button class="btn-add">+ ADD</button></div>
+        </div>
+      </div>
+      <div class="pcard" data-c="tables">
+        <div class="pimg-wrap">
+          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Chrome Coffee Table" loading="lazy" />
+          <div class="pimg-overlay"><button class="btn-sm-neon">QUICK VIEW</button></div>
+          <div class="pbadge lim">LIMITED</div><div class="pscan"></div>
+        </div>
+        <div class="pinfo">
+          <div class="pmeta"><span class="mono xtiny pid">NX-006</span><span class="mono xtiny pcat">TABLES</span></div>
+          <h4 class="pname">CHROME COFFEE TABLE</h4>
+          <div class="pstars">★★★★★ <span class="rcnt">(27)</span></div>
+          <div class="pfoot"><span class="pprice">$3,700</span><button class="btn-add">+ ADD</button></div>
+        </div>
+      </div>
+      <div class="pcard" data-c="seating">
+        <div class="pimg-wrap">
+          <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80" alt="Ghost Chair" loading="lazy" />
+          <div class="pimg-overlay"><button class="btn-sm-neon">QUICK VIEW</button></div>
+          <div class="pscan"></div>
+        </div>
+        <div class="pinfo">
+          <div class="pmeta"><span class="mono xtiny pid">NX-007</span><span class="mono xtiny pcat">SEATING</span></div>
+          <h4 class="pname">GHOST LOUNGE CHAIR</h4>
+          <div class="pstars">★★★★★ <span class="rcnt">(36)</span></div>
+          <div class="pfoot"><span class="pprice">$5,600</span><button class="btn-add">+ ADD</button></div>
+        </div>
+      </div>
+      <div class="pcard" data-c="storage">
+        <div class="pimg-wrap">
+          <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600&q=80" alt="Neon Cabinet" loading="lazy" />
+          <div class="pimg-overlay"><button class="btn-sm-neon">QUICK VIEW</button></div>
+          <div class="pbadge">NEW</div><div class="pscan"></div>
+        </div>
+        <div class="pinfo">
+          <div class="pmeta"><span class="mono xtiny pid">NX-008</span><span class="mono xtiny pcat">STORAGE</span></div>
+          <h4 class="pname">NEON EDGE CABINET</h4>
+          <div class="pstars">★★★★★ <span class="rcnt">(14)</span></div>
+          <div class="pfoot"><span class="pprice">$7,200</span><button class="btn-add">+ ADD</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="collections" id="collections">
-    <div class="section-header">
-      <div class="section-tag">// COLLECTIONS //</div>
-      <h2 class="section-title">DESIGN <span class="cyan">SERIES</span></h2>
-      <p class="section-desc">Three distinct lines — each a statement of mastery over form and function.</p>
+    <div class="sec-head">
+      <div class="sec-tag mono">// DESIGN SERIES //</div>
+      <h2 class="sec-title">THE <span class="pink-text">LINES</span></h2>
     </div>
-    <div class="collections-grid">
-      <div class="collection-card" data-collection="VOID">
-        <div class="card-img-wrap">
-          <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="Void Series" />
-          <div class="card-overlay"></div>
-          <div class="card-lines"></div>
-        </div>
-        <div class="card-info">
-          <span class="card-series">SERIES 01</span>
-          <h3>VOID</h3>
-          <p>Minimal black-on-black. Where furniture disappears into space.</p>
-          <span class="card-count">14 PIECES</span>
-        </div>
+    <div class="cgrid">
+      <div class="ccard">
+        <div class="cimg-wrap"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80" alt="Void" loading="lazy" /><div class="cgrad"></div></div>
+        <div class="cinfo"><span class="mono xtiny cyellow">SERIES 01</span><h3>VOID</h3><p>Black-on-black. Where furniture becomes shadow.</p><span class="mono xtiny cpink">14 PIECES</span></div>
       </div>
-      <div class="collection-card featured" data-collection="CHROME">
-        <div class="card-img-wrap">
-          <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&q=80" alt="Chrome Series" />
-          <div class="card-overlay"></div>
-          <div class="card-lines"></div>
-          <div class="featured-badge">FEATURED</div>
-        </div>
-        <div class="card-info">
-          <span class="card-series">SERIES 02</span>
-          <h3>CHROME</h3>
-          <p>Mirror-polished surfaces reflecting infinite possibility.</p>
-          <span class="card-count">21 PIECES</span>
-        </div>
+      <div class="ccard featured-c">
+        <div class="cimg-wrap"><img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=700&q=80" alt="Chrome" loading="lazy" /><div class="cgrad"></div><div class="feat-tag">FEATURED</div></div>
+        <div class="cinfo"><span class="mono xtiny cyellow">SERIES 02</span><h3>CHROME</h3><p>Mirror-polished surfaces. Infinite reflection.</p><span class="mono xtiny cpink">21 PIECES</span></div>
       </div>
-      <div class="collection-card" data-collection="PRISM">
-        <div class="card-img-wrap">
-          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Prism Series" />
-          <div class="card-overlay"></div>
-          <div class="card-lines"></div>
-        </div>
-        <div class="card-info">
-          <span class="card-series">SERIES 03</span>
-          <h3>PRISM</h3>
-          <p>Iridescent glass and translucent forms catching light like living crystal.</p>
-          <span class="card-count">18 PIECES</span>
-        </div>
+      <div class="ccard">
+        <div class="cimg-wrap"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=80" alt="Neon" loading="lazy" /><div class="cgrad"></div></div>
+        <div class="cinfo"><span class="mono xtiny cyellow">SERIES 03</span><h3>NEON</h3><p>Iridescent glass and LED-lit frames. Live in colour.</p><span class="mono xtiny cpink">18 PIECES</span></div>
       </div>
     </div>
   </section>
 
-  <!-- Products -->
-  <section class="products" id="products">
-    <div class="section-header">
-      <div class="section-tag">// CATALOG //</div>
-      <h2 class="section-title">SELECT <span class="cyan">PIECES</span></h2>
-    </div>
-    <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all">ALL</button>
-      <button class="filter-btn" data-filter="seating">SEATING</button>
-      <button class="filter-btn" data-filter="tables">TABLES</button>
-      <button class="filter-btn" data-filter="storage">STORAGE</button>
-      <button class="filter-btn" data-filter="beds">BEDS</button>
-    </div>
-    <div class="products-grid" id="productsGrid">
-      <div class="product-card" data-cat="seating">
-        <div class="product-img-wrap">
-          <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?w=500&q=80" alt="Orbital Chair" />
-          <div class="product-overlay"><button class="btn-glass small">QUICK VIEW</button></div>
-          <div class="product-badge">NEW</div>
-        </div>
-        <div class="product-info">
-          <div class="product-meta"><span class="product-id">NX-001</span><span class="product-cat">SEATING</span></div>
-          <h4 class="product-name">ORBITAL CHAIR</h4>
-          <div class="product-rating"><span class="stars">★★★★★</span><span class="review-count">(42)</span></div>
-          <div class="product-footer"><span class="product-price">$4,200</span><button class="btn-add">ADD</button></div>
-        </div>
-      </div>
-      <div class="product-card" data-cat="tables">
-        <div class="product-img-wrap">
-          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&q=80" alt="Void Table" />
-          <div class="product-overlay"><button class="btn-glass small">QUICK VIEW</button></div>
-        </div>
-        <div class="product-info">
-          <div class="product-meta"><span class="product-id">NX-002</span><span class="product-cat">TABLES</span></div>
-          <h4 class="product-name">VOID DINING TABLE</h4>
-          <div class="product-rating"><span class="stars">★★★★★</span><span class="review-count">(31)</span></div>
-          <div class="product-footer"><span class="product-price">$8,900</span><button class="btn-add">ADD</button></div>
-        </div>
-      </div>
-      <div class="product-card" data-cat="seating">
-        <div class="product-img-wrap">
-          <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&q=80" alt="Aurora Sofa" />
-          <div class="product-overlay"><button class="btn-glass small">QUICK VIEW</button></div>
-          <div class="product-badge bestseller">BESTSELLER</div>
-        </div>
-        <div class="product-info">
-          <div class="product-meta"><span class="product-id">NX-003</span><span class="product-cat">SEATING</span></div>
-          <h4 class="product-name">AURORA SOFA VII</h4>
-          <div class="product-rating"><span class="stars">★★★★★</span><span class="review-count">(88)</span></div>
-          <div class="product-footer"><span class="product-price">$12,400</span><button class="btn-add">ADD</button></div>
-        </div>
-      </div>
-      <div class="product-card" data-cat="storage">
-        <div class="product-img-wrap">
-          <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=500&q=80" alt="Monolith Shelf" />
-          <div class="product-overlay"><button class="btn-glass small">QUICK VIEW</button></div>
-        </div>
-        <div class="product-info">
-          <div class="product-meta"><span class="product-id">NX-004</span><span class="product-cat">STORAGE</span></div>
-          <h4 class="product-name">MONOLITH SHELF</h4>
-          <div class="product-rating"><span class="stars">★★★★☆</span><span class="review-count">(19)</span></div>
-          <div class="product-footer"><span class="product-price">$6,100</span><button class="btn-add">ADD</button></div>
-        </div>
-      </div>
-      <div class="product-card" data-cat="beds">
-        <div class="product-img-wrap">
-          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&q=80" alt="Zenith Bed" />
-          <div class="product-overlay"><button class="btn-glass small">QUICK VIEW</button></div>
-        </div>
-        <div class="product-info">
-          <div class="product-meta"><span class="product-id">NX-005</span><span class="product-cat">BEDS</span></div>
-          <h4 class="product-name">ZENITH BED FRAME</h4>
-          <div class="product-rating"><span class="stars">★★★★★</span><span class="review-count">(54)</span></div>
-          <div class="product-footer"><span class="product-price">$9,800</span><button class="btn-add">ADD</button></div>
-        </div>
-      </div>
-      <div class="product-card" data-cat="tables">
-        <div class="product-img-wrap">
-          <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&q=80" alt="Nexus Coffee Table" />
-          <div class="product-overlay"><button class="btn-glass small">QUICK VIEW</button></div>
-          <div class="product-badge">LIMITED</div>
-        </div>
-        <div class="product-info">
-          <div class="product-meta"><span class="product-id">NX-006</span><span class="product-cat">TABLES</span></div>
-          <h4 class="product-name">NEXUS COFFEE TABLE</h4>
-          <div class="product-rating"><span class="stars">★★★★★</span><span class="review-count">(27)</span></div>
-          <div class="product-footer"><span class="product-price">$3,700</span><button class="btn-add">ADD</button></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Process -->
   <section class="process" id="process">
-    <div class="section-header">
-      <div class="section-tag">// HOW IT WORKS //</div>
-      <h2 class="section-title">THE <span class="cyan">PROTOCOL</span></h2>
+    <div class="sec-head">
+      <div class="sec-tag mono">// HOW IT WORKS //</div>
+      <h2 class="sec-title">THE <span class="pink-text">PROTOCOL</span></h2>
     </div>
-    <div class="process-steps">
-      <div class="step"><div class="step-num">01</div><div class="step-icon">◈</div><h4>BRIEF TRANSMISSION</h4><p>Submit your vision. Dimensions, materials, aesthetic intent. We decode your requirements into a design language.</p></div>
-      <div class="step-connector"></div>
-      <div class="step"><div class="step-num">02</div><div class="step-icon">◉</div><h4>DESIGN RENDERING</h4><p>Our designers generate photorealistic 3D renders for approval before a single material is touched.</p></div>
-      <div class="step-connector"></div>
-      <div class="step"><div class="step-num">03</div><div class="step-icon">◬</div><h4>PRECISION CRAFT</h4><p>Master craftspeople execute the design using only premium, sustainably sourced materials and CNC-precision techniques.</p></div>
-      <div class="step-connector"></div>
-      <div class="step"><div class="step-num">04</div><div class="step-icon">◎</div><h4>WHITE GLOVE DELIVERY</h4><p>Fully assembled, installed, and positioned in your space. We don't leave until it's perfect.</p></div>
-    </div>
-  </section>
-
-  <!-- Testimonials -->
-  <section class="testimonials">
-    <div class="section-header">
-      <div class="section-tag">// CLIENT LOGS //</div>
-      <h2 class="section-title">FIELD <span class="cyan">REPORTS</span></h2>
-    </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card"><div class="quote-icon">"</div><p>"The VOID series dining table is unlike anything I've seen. Every guest asks if it's from another planet. It absolutely is."</p><div class="client-info"><div class="client-avatar">AR</div><div><div class="client-name">ALEX REINHOLT</div><div class="client-title">CREATIVE DIRECTOR, BERLIN</div></div></div></div>
-      <div class="testimonial-card featured-testimonial"><div class="quote-icon">"</div><p>"I commissioned a bespoke bed frame and sofa set. The level of detail — the precision of the joints, the quality of the finish — surpassed every expectation. This is art you live with."</p><div class="client-info"><div class="client-avatar">SM</div><div><div class="client-name">SARA MWANGI</div><div class="client-title">ARCHITECT, NAIROBI</div></div></div></div>
-      <div class="testimonial-card"><div class="quote-icon">"</div><p>"They translated my chaotic mood board into a coherent, breathtaking space. The Chrome series pieces are heirlooms waiting to happen."</p><div class="client-info"><div class="client-avatar">JL</div><div><div class="client-name">JAMES LECLAIR</div><div class="client-title">ENTREPRENEUR, DUBAI</div></div></div></div>
+    <div class="psteps">
+      <div class="pstep"><div class="pnum mono">01</div><div class="picon">◈</div><h4>TRANSMISSION</h4><p>Send your vision. Materials, dimensions, aesthetic. We decode it.</p></div>
+      <div class="pconn"></div>
+      <div class="pstep"><div class="pnum mono">02</div><div class="picon">◉</div><h4>RENDERING</h4><p>3D photorealistic renders for approval before anything is built.</p></div>
+      <div class="pconn"></div>
+      <div class="pstep"><div class="pnum mono">03</div><div class="picon">◬</div><h4>FABRICATION</h4><p>Master crafters build using premium materials and CNC precision.</p></div>
+      <div class="pconn"></div>
+      <div class="pstep"><div class="pnum mono">04</div><div class="picon">◎</div><h4>DEPLOYMENT</h4><p>White-glove delivery. Installed. Positioned. Perfect.</p></div>
     </div>
   </section>
 
-  <!-- Contact -->
+  <section class="testis">
+    <div class="sec-head">
+      <div class="sec-tag mono">// CLIENT LOGS //</div>
+      <h2 class="sec-title">FIELD <span class="pink-text">REPORTS</span></h2>
+    </div>
+    <div class="tgrid">
+      <div class="tcard"><div class="tquote">"</div><p>"The VOID dining table is unlike anything on Earth. Every guest thinks it's from another dimension. It is."</p><div class="tclient"><div class="tav">AR</div><div><div class="tname">ALEX REINHOLT</div><div class="ttitle mono xtiny">CREATIVE DIR // BERLIN</div></div></div></div>
+      <div class="tcard feat-t"><div class="tquote">"</div><p>"Commissioned a full bedroom set. The precision, the finish — it's not furniture. It's architecture you sleep in."</p><div class="tclient"><div class="tav">SM</div><div><div class="tname">SARA MWANGI</div><div class="ttitle mono xtiny">ARCHITECT // NAIROBI</div></div></div></div>
+      <div class="tcard"><div class="tquote">"</div><p>"Chrome series pieces. Absolute heirlooms. Every corp exec who visits asks where I sourced them."</p><div class="tclient"><div class="tav">JL</div><div><div class="tname">JAMES LECLAIR</div><div class="ttitle mono xtiny">ENTREPRENEUR // DUBAI</div></div></div></div>
+    </div>
+  </section>
+
   <section class="contact" id="contact">
-    <div class="contact-inner">
+    <div class="contact-wrap">
       <div class="contact-left">
-        <div class="section-tag">// INITIATE CONTACT //</div>
-        <h2 class="section-title">COMMISSION <br/><span class="cyan">YOUR PIECE</span></h2>
-        <p>Every masterpiece begins with a conversation. Tell us your vision and we'll bring it into existence.</p>
-        <div class="contact-details">
-          <div class="contact-item"><span class="contact-icon">◈</span><span>nexform@studio.com</span></div>
-          <div class="contact-item"><span class="contact-icon">◉</span><span>+1 (555) 0-NEXFORM</span></div>
-          <div class="contact-item"><span class="contact-icon">◬</span><span>Studio 7, District Zero, NYC</span></div>
+        <div class="sec-tag mono">// INITIATE CONTACT //</div>
+        <h2 class="sec-title">COMMISSION<br><span class="pink-text">YOUR PIECE</span></h2>
+        <p class="contact-p">Every masterpiece starts with a conversation. Transmit your vision.</p>
+        <div class="cdetails">
+          <div class="citem"><span class="pink-text">◈</span> nexform@studio.com</div>
+          <div class="citem"><span class="pink-text">◉</span> +1 (555) 0-NEXFORM</div>
+          <div class="citem"><span class="pink-text">◬</span> Studio 7, District Zero, NYC</div>
         </div>
       </div>
-      <form class="contact-form glass-panel" id="contactForm">
-        <div class="form-row">
-          <div class="form-group"><label>YOUR NAME</label><input type="text" placeholder="Full name" /></div>
-          <div class="form-group"><label>EMAIL</label><input type="email" placeholder="your@email.com" /></div>
+      <form class="cform" id="contactForm">
+        <div class="frow">
+          <div class="fg"><label class="mono xtiny">NAME</label><input type="text" placeholder="Your name" /></div>
+          <div class="fg"><label class="mono xtiny">EMAIL</label><input type="email" placeholder="your@email.com" /></div>
         </div>
-        <div class="form-group"><label>PIECE TYPE</label><select><option value="">Select category</option><option>Seating</option><option>Tables</option><option>Storage</option><option>Beds</option><option>Full Room Commission</option></select></div>
-        <div class="form-group"><label>BUDGET RANGE</label><select><option value="">Select range</option><option>$2,000 — $5,000</option><option>$5,000 — $15,000</option><option>$15,000 — $50,000</option><option>$50,000+</option></select></div>
-        <div class="form-group"><label>DESCRIBE YOUR VISION</label><textarea placeholder="Materials, dimensions, aesthetic direction, special requirements..."></textarea></div>
-        <button type="submit" class="btn-primary full-width"><span class="btn-icon">&#9654;</span> TRANSMIT REQUEST</button>
+        <div class="fg"><label class="mono xtiny">PIECE TYPE</label><select><option value="">Select type</option><option>Seating</option><option>Tables</option><option>Storage</option><option>Beds</option><option>Full Room</option></select></div>
+        <div class="fg"><label class="mono xtiny">BUDGET</label><select><option value="">Select range</option><option>$2k — $5k</option><option>$5k — $15k</option><option>$15k — $50k</option><option>$50k+</option></select></div>
+        <div class="fg"><label class="mono xtiny">YOUR VISION</label><textarea placeholder="Describe materials, dimensions, aesthetic..."></textarea></div>
+        <button type="submit" class="btn-cyber full">▶ TRANSMIT REQUEST</button>
       </form>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="footer-top">
-      <div class="footer-logo">
-        <span class="logo-bracket">[</span><span class="logo-text">NEXFORM</span><span class="logo-bracket">]</span>
-        <p>Furniture of Tomorrow. Crafted Today.</p>
-      </div>
-      <div class="footer-links">
-        <div class="footer-col"><h5>COLLECTIONS</h5><a href="#">Void Series</a><a href="#">Chrome Series</a><a href="#">Prism Series</a><a href="#">Custom Orders</a></div>
-        <div class="footer-col"><h5>STUDIO</h5><a href="#">About</a><a href="#">Process</a><a href="#">Materials</a><a href="#">Sustainability</a></div>
-        <div class="footer-col"><h5>CONNECT</h5><a href="#">Instagram</a><a href="#">Pinterest</a><a href="#">LinkedIn</a><a href="#">Press</a></div>
+      <div class="flogo"><span class="bracket">[</span>NEX<span class="pink-text">FORM</span><span class="bracket">]</span><p class="mono xtiny">Furniture of Tomorrow. Crafted Today.</p></div>
+      <div class="flinks">
+        <div class="fcol"><h5>COLLECTIONS</h5><a href="#">Void Series</a><a href="#">Chrome Series</a><a href="#">Neon Series</a><a href="#">Custom Orders</a></div>
+        <div class="fcol"><h5>STUDIO</h5><a href="#">About</a><a href="#">Process</a><a href="#">Materials</a><a href="#">Careers</a></div>
+        <div class="fcol"><h5>CONNECT</h5><a href="#">Instagram</a><a href="#">Pinterest</a><a href="#">LinkedIn</a><a href="#">Press</a></div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 NEXFORM STUDIO. ALL RIGHTS RESERVED.</span>
-      <span>SYS_v4.2.0 // BUILD_2026.05</span>
-    </div>
+    <div class="footer-bot mono xtiny"><span>© 2077 NEXFORM STUDIO. ALL RIGHTS RESERVED.</span><span>SYS_v7.7.7 // NIGHT_CITY_BUILD</span></div>
   </footer>
 
   <script src="script.js"></script>
