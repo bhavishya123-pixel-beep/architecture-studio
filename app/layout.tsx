@@ -2,16 +2,12 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Vastu Design Generator',
+  title: 'FORMA — Furniture for the way you live',
   description:
-    'AI-powered architecture assistant with Vastu Shastra expertise. Generate design briefs, material specs, Vastu zoning analysis, and Midjourney prompts instantly.',
+    'Minimal luxury furniture crafted from the world\'s finest materials. Solid oak, Italian leather, Carrara marble. Designed to endure.',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>{children}</body>
