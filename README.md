@@ -14,6 +14,7 @@ src/junior_architect/
     base.py           AutoCADBackend interface every backend implements
     fake_backend.py   In-memory backend — records entities, no AutoCAD required
     win32_backend.py  Real backend — drives AutoCAD live over COM (Windows only)
+    logging_backend.py Wraps any backend to log every op; dry-run previews a plan
   commands/
     registry.py       @command decorator + dispatch(); renders the catalog as
                        Claude tool-use tool definitions
@@ -61,6 +62,40 @@ junior-architect --backend fake
 ```
 Junior Architect ready. Describe what to draft (Ctrl-D to quit).
 > Draw a 5m x 4m room with a door on the south wall and label it "Bedroom 1"
+```
+
+### Watching and previewing what the agent draws
+
+Two flags wrap the chosen backend in a `LoggingBackend` so you can see exactly
+what the agent is doing — especially useful for the live AutoCAD path, which
+can't be unit-tested off Windows:
+
+```bash
+# Log every AutoCAD operation as it executes:
+junior-architect --backend autocad --verbose
+
+# Preview a whole drafting plan WITHOUT drawing anything (implies --verbose):
+junior-architect --backend autocad --dry-run
+```
+
+A dry run logs each call (composite elements expanded into their primitives)
+and returns synthetic `DRY-nnnn` handles instead of touching AutoCAD:
+
+```
+[dry-run] create_layer(name='A-WALL', color=4, linetype='Continuous')
+[dry-run] add_polyline(points=[(0, 0.1, 0), (4, 0.1, 0), (4, -0.1, 0), (0, -0.1, 0)], closed=True, layer='A-WALL')
+[dry-run] add_line(start=(1.5, 0, 0), end=(2.4, 0, 0), layer='A-DOOR')
+[dry-run] add_arc(center=(1.5, 0, 0), radius=0.9, start_angle=0, end_angle=1.5708, layer='A-DOOR')
+```
+
+`LoggingBackend` is a plain backend wrapper, so it works programmatically too:
+
+```python
+from junior_architect import JuniorArchitectAgent, FakeBackend, LoggingBackend
+
+backend = LoggingBackend(FakeBackend(), dry_run=True)
+agent = JuniorArchitectAgent(backend)
+agent.send("Draw a 4x3m bedroom with a door and label it")  # logs the plan, draws nothing
 ```
 
 Programmatic use:
