@@ -24,8 +24,9 @@ src/junior_architect/
     dimensions.py       add_linear_dimension, add_aligned_dimension
     hatching.py         add_hatch
     blocks.py           insert_block
-    architecture.py     draw_wall, add_door, add_window, label_room — composite
-                        architectural elements built on the primitives
+    architecture.py     draw_wall, draw_wall_with_openings, add_door, add_window,
+                        label_room — composite architectural elements built on
+                        the primitives
     document.py         new_drawing, open_drawing, save_drawing, zoom_extents
   agent.py            JuniorArchitectAgent — Claude tool-use loop over the registry
   cli.py              `junior-architect` command (chat REPL)
@@ -123,9 +124,10 @@ registry.dispatch("draw_wall", backend, start=[0, 0], end=[5, 0], thickness=0.2,
 - The real backend talks to AutoCAD via COM Automation (`AutoCAD.Application`), so it
   only runs on Windows with AutoCAD installed and licensed. Everything else in this
   package is platform-independent and unit-tested against `FakeBackend`.
-- `add_door` / `add_window` draw standard symbols along a wall direction but don't cut
-  the wall opening automatically — that needs boolean/region operations on the wall
-  solid, which is a natural next slice.
+- `add_door` / `add_window` draw standard symbols along a wall direction. To actually cut
+  the opening out of the wall, use `draw_wall_with_openings`, which draws wall segments
+  around each opening and caps the wall thickness with jamb lines at the opening edges —
+  then place the door/window symbol at the same offset point.
 - Angles are degrees in every command's schema (natural for the chat agent to reason
   about) and are converted to radians at the backend boundary, matching AutoCAD's own
   COM convention.

@@ -36,6 +36,81 @@ def draw_wall(backend, start, end, thickness=0.2, layer=None):
 
 
 @command(
+    name="draw_wall_with_openings",
+    description=(
+        "Draw a straight wall with door/window openings actually cut out of it: wall segments are "
+        "drawn between the openings, and jamb lines cap the wall thickness at each opening edge. "
+        "Each opening's 'offset' is the distance from the wall's start point to the opening's near "
+        "edge, measured along the centerline. Combine with add_door/add_window to place the symbol "
+        "inside the opening (door hinge / window start at the same offset point)."
+    ),
+    parameters={
+        "start": {**_POINT, "description": "Wall centerline start point"},
+        "end": {**_POINT, "description": "Wall centerline end point"},
+        "openings": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "offset": {
+                        "type": "number",
+                        "description": "Distance from the wall start to the opening's near edge, along the centerline",
+                    },
+                    "width": {"type": "number", "description": "Clear width of the opening"},
+                },
+                "required": ["offset", "width"],
+            },
+            "description": "Openings to cut, in any order; they must fit within the wall and not overlap",
+        },
+        "thickness": {"type": "number", "description": "Wall thickness in drawing units, defaults to 0.2 (e.g. 200mm)"},
+        "layer": {"type": "string", "description": "Layer to draw on, conventionally A-WALL"},
+    },
+    required=["start", "end", "openings"],
+)
+def draw_wall_with_openings(backend, start, end, openings, thickness=0.2, layer=None):
+    a = point_from(start)
+    b = point_from(end)
+    length = math.hypot(b.x - a.x, b.y - a.y)
+    if length == 0:
+        raise ValueError("Cannot draw a zero-length wall")
+    ux, uy = (b.x - a.x) / length, (b.y - a.y) / length
+    nx, ny = -uy, ux
+    half = thickness / 2
+
+    def at(dist, side=0.0):
+        return point_from([a.x + ux * dist + nx * side, a.y + uy * dist + ny * side, a.z])
+
+    ordered = sorted(openings, key=lambda o: o["offset"])
+    segments = []
+    cursor = 0.0
+    for opening in ordered:
+        off, width = opening["offset"], opening["width"]
+        if width <= 0:
+            raise ValueError(f"Opening width must be positive, got {width}")
+        if off < 0 or off + width > length + 1e-9:
+            raise ValueError(f"Opening at offset {off} (width {width}) does not fit in a wall of length {length:g}")
+        if off < cursor - 1e-9:
+            raise ValueError(f"Opening at offset {off} overlaps the previous opening")
+        if off > cursor:
+            segments.append((cursor, off))
+        cursor = off + width
+    if cursor < length - 1e-9:
+        segments.append((cursor, length))
+
+    segment_handles = []
+    for s0, s1 in segments:
+        corners = [at(s0, half), at(s1, half), at(s1, -half), at(s0, -half)]
+        segment_handles.append(backend.add_polyline(corners, closed=True, layer=layer))
+
+    jamb_handles = []
+    for opening in ordered:
+        for edge in (opening["offset"], opening["offset"] + opening["width"]):
+            jamb_handles.append(backend.add_line(at(edge, half), at(edge, -half), layer=layer))
+
+    return {"segments": segment_handles, "jambs": jamb_handles}
+
+
+@command(
     name="add_door",
     description=(
         "Draw a single-leaf door symbol (leaf line + quarter-circle swing arc) with its hinge at a "
