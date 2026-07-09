@@ -49,6 +49,13 @@ def main(argv=None) -> int:
         action="store_true",
         help="Log operations without executing them (implies --verbose). Preview a plan without drawing.",
     )
+    parser.add_argument(
+        "--prompt",
+        help=(
+            "One-shot mode: draft this single instruction (e.g. \"draw a 2-bedroom apartment, "
+            "8x10m\"), print the agent's reply, and exit without starting the REPL."
+        ),
+    )
     args = parser.parse_args(argv)
 
     if args.verbose or args.dry_run:
@@ -61,6 +68,14 @@ def main(argv=None) -> int:
         return 1
 
     agent = JuniorArchitectAgent(backend, model=args.model)
+
+    if args.prompt:
+        try:
+            print(agent.send(args.prompt))
+        except Exception as exc:
+            print(f"Error: {exc}", file=sys.stderr)
+            return 1
+        return 0
 
     banner = "Junior Architect ready. Describe what to draft (Ctrl-D to quit)."
     if args.dry_run:

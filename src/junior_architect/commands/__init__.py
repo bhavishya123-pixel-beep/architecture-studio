@@ -4,4 +4,4 @@ Importing this package registers every command module below into
 `registry.REGISTRY`.
 """
 from . import registry  # noqa: F401  (re-exported for `from .commands import registry`)
-from . import architecture, blocks, dimensions, document, hatching, layers, primitives  # noqa: F401
+from . import architecture, blocks, dimensions, document, floorplan, hatching, layers, primitives  # noqa: F401
