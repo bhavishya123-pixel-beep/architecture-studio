@@ -41,6 +41,8 @@ class Win32ComBackend(AutoCADBackend):
 
     def __init__(self, visible: bool = True) -> None:
         _require_win32()
+        # Safe to call repeatedly; required when the backend is used off the main thread.
+        pythoncom.CoInitialize()
         self.app = win32com.client.Dispatch("AutoCAD.Application")
         self.app.Visible = visible
         if self.app.Documents.Count == 0:

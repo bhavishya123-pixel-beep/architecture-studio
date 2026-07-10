@@ -13,6 +13,7 @@ src/junior_architect/
   backend/
     base.py           AutoCADBackend interface every backend implements
     fake_backend.py   In-memory backend — records entities, no AutoCAD required
+    dxf_backend.py    File backend — writes real .dxf files AutoCAD opens natively (any OS)
     win32_backend.py  Real backend — drives AutoCAD live over COM (Windows only)
     logging_backend.py Wraps any backend to log every op; dry-run previews a plan
   commands/
@@ -57,16 +58,20 @@ Requires an `ANTHROPIC_API_KEY` environment variable to run the chat agent.
 ## Usage
 
 ```bash
+# Works on ANY OS, no AutoCAD needed: draft to a real .dxf file, open it in AutoCAD later.
+# One command, one building:
+junior-architect --backend dxf --output apartment.dxf \
+    --prompt "Draft a 2-bedroom apartment, 8x10m, living room at the front"
+
 # Drive a live AutoCAD session (Windows, AutoCAD must be installed):
 junior-architect --backend autocad
 
 # Try it without AutoCAD, against the in-memory fake backend:
 junior-architect --backend fake
-
-# Build a whole plan from a single prompt, no REPL — one command, one building:
-junior-architect --backend autocad --prompt "Draft a 2-bedroom apartment, 8x10m, \
-living room at the front, dimensions on"
 ```
+
+A generated example is checked in at `examples/apartment.dxf` — open it in AutoCAD,
+any DXF viewer, or https://viewer.autodesk.com.
 
 ```
 Junior Architect ready. Describe what to draft (Ctrl-D to quit).
@@ -142,9 +147,12 @@ declared by either room cut into them.
 
 ## Notes and current limitations
 
-- The real backend talks to AutoCAD via COM Automation (`AutoCAD.Application`), so it
-  only runs on Windows with AutoCAD installed and licensed. Everything else in this
-  package is platform-independent and unit-tested against `FakeBackend`.
+- The `dxf` backend is the fully-verified path on every platform: it writes real DXF
+  files (validated with ezdxf's auditor in the test suite) that AutoCAD opens natively.
+- The `autocad` backend talks to AutoCAD via COM Automation (`AutoCAD.Application`), so
+  it only runs on Windows with AutoCAD installed and licensed. Before first use, run
+  `python scripts/smoke_autocad.py` there — it exercises every COM operation one at a
+  time and prints PASS/FAIL with the exact error for anything that needs fixing.
 - `add_door` / `add_window` draw standard symbols along a wall direction. To actually cut
   the opening out of the wall, use `draw_wall_with_openings`, which draws wall segments
   around each opening and caps the wall thickness with jamb lines at the opening edges —

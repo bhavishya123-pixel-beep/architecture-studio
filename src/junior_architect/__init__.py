@@ -1,4 +1,4 @@
 from .agent import JuniorArchitectAgent
-from .backend import AutoCADBackend, FakeBackend, LoggingBackend
+from .backend import AutoCADBackend, DxfBackend, FakeBackend, LoggingBackend
 
-__all__ = ["JuniorArchitectAgent", "AutoCADBackend", "FakeBackend", "LoggingBackend"]
+__all__ = ["JuniorArchitectAgent", "AutoCADBackend", "DxfBackend", "FakeBackend", "LoggingBackend"]
