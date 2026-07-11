@@ -7,6 +7,7 @@ radians, matching :class:`AutoCADBackend`; ezdxf wants degrees, so conversion
 happens here.
 """
 import math
+import os
 from typing import Optional, Sequence
 
 from ..geometry import Point
@@ -55,7 +56,15 @@ class DxfBackend(AutoCADBackend):
         target = path or self.path
         if not target:
             raise ValueError("No output path set; pass one to save_drawing() or the DxfBackend constructor")
-        self.doc.saveas(target)
+        if os.path.splitext(target)[1].lower() == ".dwg":
+            # Native DWG: write DXF to a sibling temp file, then convert.
+            from .dwg_export import convert_dxf_to_dwg
+
+            dxf_tmp = os.path.splitext(target)[0] + ".dxf"
+            self.doc.saveas(dxf_tmp)
+            convert_dxf_to_dwg(dxf_tmp, target)
+        else:
+            self.doc.saveas(target)
         self.path = target
 
     def zoom_extents(self) -> None:

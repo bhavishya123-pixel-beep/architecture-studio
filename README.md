@@ -73,6 +73,18 @@ junior-architect --backend fake
 A generated example is checked in at `examples/apartment.dxf` — open it in AutoCAD,
 any DXF viewer, or https://viewer.autodesk.com.
 
+**Native DWG:** give the output a `.dwg` extension and it's converted from DXF via an
+external converter — the free [ODA File Converter](https://www.opendesign.com/guestfiles/oda_file_converter)
+or AutoCAD's `accoreconsole.exe` (whichever is installed):
+
+```bash
+junior-architect --backend dxf --output plan.dwg --prompt "Draft a 2-bedroom apartment, 8x10m"
+```
+
+DXF output needs no external tools; DWG needs one of the converters present. See
+`docs/environment-verification.md` and `docs/autocad-2027-status.md` for exactly what
+is verified where.
+
 ```
 Junior Architect ready. Describe what to draft (Ctrl-D to quit).
 > Draw a 5m x 4m room with a door on the south wall and label it "Bedroom 1"

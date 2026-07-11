@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "junior-architect"
-version = "0.3.0"
+version = "0.4.0"
 description = "An AI junior architect that drafts in AutoCAD via natural-language chat."
 readme = "README.md"
 requires-python = ">=3.9"
